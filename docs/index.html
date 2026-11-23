@@ -1,52 +1,34 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Calculate thermodynamic and transport properties of refrigerants, water and other fluids in your browser with CoolProp.">
-  <meta name="theme-color" content="#f5f7fb">
-  <title>Fluid Properties Calculator — CoolProp Online</title>
-  <link rel="canonical" href="https://fluidpropertiescalculator.aditusan.dev/">
-  <link rel="stylesheet" href="./style.css">
-  <script>
-    if (location.protocol === 'file:') {
-      location.replace('./local-preview.html' + location.hash);
-    }
-  </script>
-  <script type="module">
-    const startupError = document.getElementById('startup-error');
-    try {
-      if (location.protocol === 'file:') {
-        throw new Error('Open the local copy bundled with this project.');
-      }
-      await import('./app.js');
-    } catch (error) {
-      console.error('Calculator startup failed:', error);
-      startupError.hidden = false;
-      document.getElementById('engine-state')?.setAttribute('hidden', '');
-    }
-  </script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fluid Properties Calculator | CoolProp Online</title>
+<meta name="description" content="Calculate thermodynamic and transport properties of water, refrigerants, and other fluids in your browser with CoolProp.">
+<meta name="theme-color" content="#174eac">
+<link rel="canonical" href="https://fluidpropertiescalculator.aditusan.dev/">
+<link rel="stylesheet" href="./assets/site.css">
+<script defer src="./assets/site.js"></script>
+<script defer src="./assets/calculator.js"></script>
 </head>
-<body>
-  <a class="skip-link" href="#main">Skip to content</a>
-  <header class="site-header">
-    <div class="wrap">
-      <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">ƒ</span>Fluid Properties</a>
-      <nav class="site-nav" aria-label="Main navigation">
-        <a href="#state-heading">Calculator</a>
-        <a href="#result-heading">Properties</a>
-        <a href="./reference/">References</a>
-      </nav>
-    </div>
-  </header>
-  <main class="wrap page" id="main">
-    <div class="title">
-      <h1>Fluid Properties</h1>
-      <p>Calculate thermodynamic and transport properties for refrigerants, water, and other fluids with CoolProp.</p>
-    </div>
-    <noscript><p class="status error">Enable JavaScript to run CoolProp in your browser.</p></noscript>
-    <p id="startup-error" class="startup-error" role="alert" hidden>The calculator could not load. For an extracted folder, open the <a href="./local-preview.html">offline calculator</a> or run <code>Start-Local-Preview.bat</code>.</p>
-    <div class="calculator">
+<body class="site-fluid">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">ƒ</span>Fluid Properties</a>
+    <nav class="site-nav" aria-label="Main navigation"><a href="./" aria-current="page">Calculator</a>
+<a href="./#notes-heading">Calculation notes</a>
+<a href="./reference/">Reference</a></nav>
+  </div>
+</header>
+<main class="wrap page" id="main">
+<div class="title">
+  <h1>Fluid Properties Calculator</h1>
+  <p>Calculate thermodynamic and transport properties of water, refrigerants, and other fluids in your browser with CoolProp.</p>
+</div>
+<noscript><p class="noscript notice">Enable JavaScript to run this calculator. The reference text and links remain available without it.</p></noscript>
+<p id="startup-error" class="notice startup-error" role="alert" hidden>The calculator could not load. Reload the page to retry.</p>
+<div class="calculator">
       <section class="panel" aria-labelledby="state-heading">
         <h2 class="panel-title" id="state-heading">Known properties</h2>
         <form class="panel-body" id="state" autocomplete="off">
@@ -54,16 +36,20 @@
             <div class="field"><label for="fluid">Fluid</label><select id="fluid" required><option value="">Choose a fluid</option><option>Water</option><option>R134a</option><option>Air</option></select></div>
             <div class="field"><label for="example">Example</label><select id="example"><option value="water">Water at atmospheric saturation</option><option value="r134a">R134a saturated liquid at 300 K</option><option value="mix">Water at 50% vapour quality</option><option value="air">Air at room temperature</option></select></div>
           </div>
-          <div class="field-grid panel-section">
-            <div class="field"><label for="key-a">Input property 1</label><select id="key-a"></select></div>
-            <div class="field"><label for="key-b">Input property 2</label><select id="key-b"></select></div>
-            <div class="field"><label for="value-a">Value 1</label><input type="number" id="value-a" step="any" required></div>
-            <div class="field"><label for="value-b">Value 2</label><input type="number" id="value-b" step="any" required></div>
-            <div class="field"><label for="unit-a">Unit 1</label><select id="unit-a"></select></div>
-            <div class="field"><label for="unit-b">Unit 2</label><select id="unit-b"></select></div>
+          <div class="field-grid panel-section state-inputs">
+            <div class="property-input" role="group" aria-label="First known property">
+              <div class="field"><label for="key-a">Input property 1</label><select id="key-a"></select></div>
+              <div class="field"><label for="value-a">Value 1</label><input name="value-a" type="number" id="value-a" step="any" required></div>
+              <div class="field"><label for="unit-a">Unit 1</label><select id="unit-a"></select></div>
+            </div>
+            <div class="property-input" role="group" aria-label="Second known property">
+              <div class="field"><label for="key-b">Input property 2</label><select id="key-b"></select></div>
+              <div class="field"><label for="value-b">Value 2</label><input name="value-b" type="number" id="value-b" step="any" required></div>
+              <div class="field"><label for="unit-b">Unit 2</label><select id="unit-b"></select></div>
+            </div>
           </div>
           <p class="status">Pressure is absolute. Vapour quality Q = 0 is saturated liquid and Q = 1 is saturated vapour.</p>
-          <div class="form-actions">
+          <div class="actions form-actions">
             <button class="primary" id="calculate" type="submit" disabled>Calculate</button>
             <button id="give-example" type="button">Give example</button>
           </div>
@@ -100,10 +86,20 @@
         <p>Inside the liquid–vapour region, the calculator shows bulk thermodynamic properties and vapour quality. Use Q = 0 or Q = 1 for the corresponding phase’s transport properties and heat capacities.</p>
       </div>
     </section>
-  </main>
-  <footer class="site-footer"><div class="wrap">
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
     <a href="https://aditusan.dev/">aditusan.dev</a>
-    <nav aria-label="Related tools"><a href="https://watersaturationconverter.aditusan.dev/">Water Saturation Converter</a><a href="https://psychrometrics.aditusan.dev/">Psychrometric Tools</a><a href="https://adi.aditusan.dev/">ADI Solver</a></nav>
-  </div></footer>
+    <nav aria-label="Footer navigation">
+      <a href="./">Calculator</a>
+      <a href="./privacy/">Privacy</a>
+      <a href="https://github.com/Sentinel-Android/Fluid-Properties-Calculator">Source code</a>
+      <a href="https://watersaturationconverter.aditusan.dev/">Water Saturation</a>
+      <a href="https://psychrometricscalculator.aditusan.dev/">Psychrometric Tools</a>
+      <a href="https://adisolver.aditusan.dev/">ADI Solver</a>
+    </nav>
+  </div>
+</footer>
 </body>
 </html>

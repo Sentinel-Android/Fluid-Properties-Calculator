@@ -1,41 +1,77 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Sources for the Fluid Properties calculator.">
-  <meta name="theme-color" content="#f5f7fb">
-  <title>Fluid Properties | References</title>
-  <link rel="canonical" href="https://fluidpropertiescalculator.aditusan.dev/reference/">
-  <link rel="stylesheet" href="../style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reference | Fluid Properties Calculator</title>
+<meta name="description" content="Property symbols, output units, phase handling, MATLAB calls, and CoolProp sources.">
+<meta name="theme-color" content="#174eac">
+<link rel="canonical" href="https://fluidpropertiescalculator.aditusan.dev/reference/">
+<link rel="stylesheet" href="../assets/site.css">
+<script defer src="../assets/site.js"></script>
 </head>
-<body>
-  <a class="skip-link" href="#main">Skip to content</a>
-  <header class="site-header">
-    <div class="wrap">
-      <a class="brand" href="../"><span class="brand-mark" aria-hidden="true">ƒ</span>Fluid Properties</a>
-      <nav class="site-nav" aria-label="Main navigation">
-        <a href="../">Calculator</a>
-        <a href="../#result-heading">Properties</a>
-        <a href="./" aria-current="page">References</a>
-      </nav>
-    </div>
-  </header>
-  <main class="wrap page" id="main">
-    <div class="document-heading">
-      <h1>References</h1>
-      <a class="back" href="../">Go to calculator</a>
-    </div>
-    <div class="panel document-panel">
-      <ul class="source-links">
+<body class="site-fluid">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../"><span class="brand-mark" aria-hidden="true">ƒ</span>Fluid Properties</a>
+    <nav class="site-nav" aria-label="Main navigation"><a href="../">Calculator</a>
+<a href="../#notes-heading">Calculation notes</a>
+<a href="../reference/" aria-current="page">Reference</a></nav>
+  </div>
+</header>
+<main class="wrap page" id="main">
+<div class="title">
+  <a class="back" href="../">Main calculator</a>
+  <h1>Reference</h1>
+  <p>Property symbols, output units, phase handling, MATLAB calls, and CoolProp sources.</p>
+</div>
+<section class="panel" aria-labelledby="definitions-title">
+  <h2 class="panel-title" id="definitions-title">Property symbols and units</h2>
+  <div class="table-wrap" tabindex="0" role="region" aria-label="Fluid property symbols and units"><table class="reference-table">
+    <thead><tr><th scope="col">Property</th><th scope="col">CoolProp / MATLAB key</th><th scope="col">Displayed output unit</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Temperature</th><td>T</td><td>°C</td></tr>
+      <tr><th scope="row">Absolute pressure</th><td>P</td><td>kPa</td></tr>
+      <tr><th scope="row">Density</th><td>D</td><td>kg/m³</td></tr>
+      <tr><th scope="row">Specific enthalpy</th><td>H</td><td>kJ/kg</td></tr>
+      <tr><th scope="row">Specific entropy</th><td>S</td><td>kJ/(kg·K)</td></tr>
+      <tr><th scope="row">Specific internal energy</th><td>U</td><td>kJ/kg</td></tr>
+      <tr><th scope="row">Vapour quality</th><td>Q</td><td>Mass fraction, 0–1</td></tr>
+      <tr><th scope="row">Dynamic viscosity</th><td>V</td><td>Pa·s</td></tr>
+      <tr><th scope="row">Thermal conductivity</th><td>L</td><td>W/(m·K)</td></tr>
+      <tr><th scope="row">Specific heat at constant pressure</th><td>C</td><td>kJ/(kg·K)</td></tr>
+      <tr><th scope="row">Specific heat at constant volume</th><td>O</td><td>kJ/(kg·K)</td></tr>
+    </tbody>
+  </table></div>
+</section>
+<section class="section prose">
+  <h2>Inputs and phase</h2>
+  <p>Choose two different, independent properties from T, P, Q, H, S, D, and U. Input units are converted to SI before calling CoolProp. An unsupported pair or a state outside a fluid’s available range produces an error.</p>
+  <p>Pressure is absolute. Q = 0 means saturated liquid, Q = 1 means saturated vapour, and 0 &lt; Q &lt; 1 means a two-phase mixture. Quality is unavailable for single-phase states.</p>
+  <p>For a two-phase mixture, the calculator leaves viscosity, thermal conductivity, and specific heats unavailable. Select Q = 0 or Q = 1 to query each saturated phase.</p>
+  <h2>MATLAB calls</h2>
+  <p>The output selector below a result creates a call to your MATLAB <code>getFluidProperty</code> interface. Calls use SI inputs: kelvin, pascals, and joules per kilogram as applicable.</p>
+  <div class="equation"><code>getFluidProperty(lib, 'H', 'T', 300, 'Q', 0, 'R134a')</code></div>
+  <p>Set up <code>lib</code> in MATLAB with your installed property library first. The website itself uses the bundled CoolProp WebAssembly engine and runs its calculations in a browser worker.</p>
+</section>
+<section class="section"><h2>Sources</h2><div class="panel panel-body"><ul class="source-links">
         <li><a href="https://coolprop.org/coolprop/HighLevelAPI.html">CoolProp property API</a></li>
-        <li><a href="../vendor/LICENSE.txt">CoolProp license</a></li>
-      </ul>
-    </div>
-  </main>
-  <footer class="site-footer"><div class="wrap">
+        <li><a href="../assets/vendor/LICENSE.txt">CoolProp license</a></li>
+      </ul></div></section>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
     <a href="https://aditusan.dev/">aditusan.dev</a>
-    <nav aria-label="Related tools"><a href="https://watersaturationconverter.aditusan.dev/">Water Saturation Converter</a><a href="https://psychrometrics.aditusan.dev/">Psychrometric Tools</a><a href="https://adi.aditusan.dev/">ADI Solver</a></nav>
-  </div></footer>
+    <nav aria-label="Footer navigation">
+      <a href="../">Calculator</a>
+      <a href="../privacy/">Privacy</a>
+      <a href="https://github.com/Sentinel-Android/Fluid-Properties-Calculator">Source code</a>
+      <a href="https://watersaturationconverter.aditusan.dev/">Water Saturation</a>
+      <a href="https://psychrometricscalculator.aditusan.dev/">Psychrometric Tools</a>
+      <a href="https://adisolver.aditusan.dev/">ADI Solver</a>
+    </nav>
+  </div>
+</footer>
 </body>
 </html>
